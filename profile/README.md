@@ -1,3 +1,3 @@
 Contact the Enterprise Contract team at
 [`#forum-stonesoup-contract` in the CoreOS Slack](https://coreos.slack.com/archives/C031J4KBFME).
-Read [the documentation](https://enterprise-contract.github.io/ec/main/index.html).
+Read [the documentation](https://enterprisecontract.dev).
