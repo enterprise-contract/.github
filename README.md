@@ -20,3 +20,10 @@ ruleset](https://docs.github.com/en/repositories/configuring-branches-and-merges
 at the organization level. This is not done automatically. When adding a new workflow, be sure to
 also update the corresponding ruleset
 [here](https://github.com/organizations/enterprise-contract/settings/rules).
+
+An existing ruleset may prevent direct pushes to the default branch, e.g. `main`, for a variety of
+reasons. Although pushing a commit directly to `main` is not recommended, certain occasions require
+it. For example, it is not possible to create a pull request targeting a brand-new empty repository.
+In such cases, add a temporary exception target for the corresponding ruleset. Remember to revert
+this change. Alternatively, avoid creating empty repositories altogether by always choosing to
+include a license.
