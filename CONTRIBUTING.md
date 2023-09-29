@@ -53,7 +53,31 @@ Before contributing code or documentation to this project, make sure you read th
 
 ### Commit message standards
 
-The commit message should contain an overall explanation about the change and the motivation behind it. Please note that mentioning a Jira ticket ID or a GitHub issue, isn't a replacement for that.
+The commit message should contain an overall explanation about the change and the motivation behind it.
+
+In addition to an explanation about the change, please ensure that each commit contains a line similar to one of the following:
+
+|if your commit|use this keyword|value|
+|-|-------|-----|
+|resolves an issue/ticket|resolves, res, resolved| #123(only for GitHub Issues), PROJ-1234 (any other issue tracker)|
+|only references an issue/ticket|ref, refs, references, refers to| #123(only for GitHub Issues), PROJ-1234 (any other issue tracker)|
+
+*Example git commit message*:
+```
+Fixed the pesky bug.
+
+This commit fixed that pesky bug that we all hated.
+
+resolves: PROJ-1234
+Signed-off-by: John Doe <jdoe@example.com>
+
+# Please enter the commit message for your changes. Lines starting 
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# Date: Fri Jan 10 00:00:00 2025 -0400
+#
+# On branch PROJ-1234
+```
 
 ### Signing Commits
 
@@ -64,7 +88,11 @@ All commits must be signed-off
 All changes must come from a pull request (PR) and cannot be directly committed. While anyone can engage in activity on a PR, pull requests are only approved by team members.
 
 Before a pull request can be merged:
-
+* The PR body should contain a line similar to one of the following:
+  |if your pull request|use this keyword|value|
+  |-|-------|-----|
+  |resolves an issue/ticket|resolves, res, resolved| #123(only for GitHub Issues), PROJ-1234 (any other issue tracker)|
+  |only references an issue/ticket|ref, refs, references, refers to| #123(only for GitHub Issues), PROJ-1234 (any other issue tracker)|
 * The content of the PR has to be relevant to the PR itself
 * The contribution must follow the style guidelines of this project
 * Multiple commits should be used if the PR is complex and clarity can be improved, but they should still relate to a single topic
