@@ -1,0 +1,92 @@
+name: Check Commit Message
+
+on:
+  pull_request:
+    types: [opened, synchronize, edited, reopened]
+
+jobs:
+  check-commit-message:
+    runs-on: ubuntu-latest
+    env:
+      REGEX_PATTERN: '^(?i)(ref|refs|reference|references|res|resolve|resolves)[ \t]*:[ \t]*(gh-|\#|\!|[A-Za-z]+-)\d+\s*$'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+
+      - name: Install jq
+        run: sudo apt-get install jq
+
+      - name: Fetch PR data
+        id: pr_data
+        run: |
+          PR_DATA=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                    "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}")
+          echo "PR_DATA<<EOF" >> $GITHUB_ENV
+          echo "$PR_DATA" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Check PR body
+        run: |
+          # Extract the PR body from the PR_DATA environment variable
+          PR_BODY=$(echo "$PR_DATA" | jq -r '.body')
+          echo -e "$PR_BODY" > temp_message.txt
+          echo -e "PR Body:\n$PR_BODY"
+          if grep -Pq "$REGEX_PATTERN" temp_message.txt; then
+            echo -e "PR body meets the requirements.\n"
+            exit 0
+          else
+            echo """
+            PR body does not meet the requirements.
+
+            If PR resolves an issue or ticket, amend the PR body to
+            include a reference to the issue or ticket like so:
+            
+            resolves: PROJ-1234
+            or
+            resolves: #123 (if resolving a GitHub issue)
+
+            If PR does not resolve an issue or ticket, but is part of
+            work done on an issue, amend the PR body to include a
+            reference to the issue or ticket like so:
+
+            reference: PROJ-1234
+            or
+            reference: #123 (if referencing a GitHub issue)
+
+            """
+            exit 1
+          fi
+
+
+      - name: Check PR commit messages
+        run: |
+          COMMIT_DATA=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                        "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/commits")
+          echo "$COMMIT_DATA" | jq -c '.[]' | while read -r commit; do
+            COMMIT_MESSAGE=$(echo "$commit" | jq -r '.commit.message')
+            echo -e "$COMMIT_MESSAGE" > temp_commit_message.txt
+            echo -e "Evaluating commit message:\n$COMMIT_MESSAGE"
+            if grep -Pq "$REGEX_PATTERN" temp_commit_message.txt; then
+              echo -e "Commit message meets the requirements.\n"
+            else
+              echo -e """
+              Commit message does not meet the requirements.\
+
+              If commit resolves an issue or ticket, amend the commit to
+              include a reference to the issue or ticket like so:
+              
+              resolves: PROJ-1234
+              or
+              resolves: #123 (if resolving a GitHub issue)
+
+              If commit does not resolve an issue or ticket, but was
+              done while working on an issue, amend the commit to include
+              a reference to the issue or ticket like so:
+
+              reference: PROJ-1234
+              or
+              reference: #123 (if referencing a GitHub issue)
+              """
+              exit 1
+            fi
+          done
