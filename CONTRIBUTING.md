@@ -71,7 +71,7 @@ This commit fixed that pesky bug that we all hated.
 resolves: PROJ-1234
 Signed-off-by: John Doe <jdoe@example.com>
 
-# Please enter the commit message for your changes. Lines starting 
+# Please enter the commit message for your changes. Lines starting
 # with '#' will be ignored, and an empty message aborts the commit.
 #
 # Date: Fri Jan 10 00:00:00 2025 -0400
@@ -85,7 +85,7 @@ All commits must be signed-off
 
 ### Pull Requests
 
-All changes must come from a pull request (PR) and cannot be directly committed. While anyone can engage in activity on a PR, pull requests are only approved by team members.
+All changes must come from a pull request (PR) and cannot be directly committed. While anyone can engage in activity on a PR, pull requests may only be approved by team members.
 
 Before a pull request can be merged:
 * The PR body should contain a line similar to one of the following:
@@ -97,7 +97,10 @@ Before a pull request can be merged:
 * The contribution must follow the style guidelines of this project
 * Multiple commits should be used if the PR is complex and clarity can be improved, but they should still relate to a single topic
 * For code contributions, tests have to be added/modified to ensure the code works
-* There has to be at least one approval
+* The pull request must be approved by [dev team members](https://github.com/orgs/enterprise-contract/teams/devs):
+  * If submitted by a non-team member, the pull request must have at least two approving reviews
+  * If submitted by a team member, the pull request must have at least one approving review
+  * If the changes are "simple" (e.g. a typo fix), the pull request only needs one approval, regardless of origin. Team members may exercise their best judgement when determining if a PR qualifies as a simple fix.
 * The feature branch must be rebased so it contains the latest changes from the target branch
 * The CI has to pass successfully
 * Every comment has to be addressed and resolved
